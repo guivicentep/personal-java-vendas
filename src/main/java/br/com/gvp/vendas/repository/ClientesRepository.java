@@ -1,39 +1,23 @@
 package br.com.gvp.vendas.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import br.com.gvp.vendas.entity.Cliente;
 
-@Repository
-public class ClientesRepository {
+public interface ClientesRepository extends JpaRepository<Cliente, Integer>{
 	
-	private static String INSERT = "insert into cliente (nome) values (?) ";
-	private static String SELECT_ALL = "select * from cliente";
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	List<Object> findByNomeLike(String nome);
 	
-	public Cliente salvar(Cliente cliente) {
-		jdbcTemplate.update(INSERT ,new Object[] {cliente.getNome()});
-		return cliente;
-	}
+	@Query(" delete from Cliente c where c.nome = :nome ")
+	@Modifying
+	void deleteByNome(String nome);
 	
-	public List<Cliente> listarTodos() {
-		return jdbcTemplate.query(SELECT_ALL, new RowMapper<Cliente>() {
-		@Override
-		public Cliente mapRow(ResultSet resultSet, int i) throws SQLException {
-			Integer id = resultSet.getInt("id");
-			String nome = resultSet.getString("nome");
-			return new Cliente(id, nome);
-		}
-		
-		});
-	}
+	@Query(" select c from Cliente c left join fetch c.pedidos where c.id = :id")
+	Cliente findClienteFetchPedidos(@Param("id") Integer id);
+	
 }
