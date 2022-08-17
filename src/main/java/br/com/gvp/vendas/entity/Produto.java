@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,10 +25,11 @@ public class Produto {
 	private Integer id;
 	
 	@Column(length = 100)
+	@NotEmpty(message = "O campo descrição é obrigatório!")
 	private String descricao;
 	
 	@Column(name = "preco_unitario", precision = 20, scale = 2)
-
+	@NotNull(message = "O campo preço é obrigatório!")
 	private BigDecimal preco;
 	
 	public Integer getId() {
