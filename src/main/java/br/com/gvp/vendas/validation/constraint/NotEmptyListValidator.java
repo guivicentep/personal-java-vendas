@@ -7,6 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import br.com.gvp.vendas.validation.NotEmptyList;
 
+@SuppressWarnings("rawtypes")
 public class NotEmptyListValidator implements ConstraintValidator<NotEmptyList, List>{
 
 	@Override

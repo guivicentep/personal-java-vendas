@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.gvp.vendas.service.impl.UsuarioServiceImpl;
 
+@SuppressWarnings("deprecation")
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
@@ -48,4 +49,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 				.httpBasic();
 	}
+	
 }
