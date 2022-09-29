@@ -1,4 +1,4 @@
-package br.com.gvp.vendas;
+package br.com.gvp.vendas.security.jwt;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
+import br.com.gvp.vendas.VendasApplication;
 import br.com.gvp.vendas.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
