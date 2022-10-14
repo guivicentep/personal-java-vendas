@@ -7,13 +7,18 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.gvp.vendas.entity.Usuario;
+import br.com.gvp.vendas.exception.SenhaInvalidaException;
 import br.com.gvp.vendas.repository.UsuarioRepository;
 
 @Service
 public class UsuarioServiceImpl implements UserDetailsService {
+	
+	@Autowired
+	private PasswordEncoder encoder;
 	
 	@Autowired
 	private UsuarioRepository repository;
@@ -23,6 +28,16 @@ public class UsuarioServiceImpl implements UserDetailsService {
 		return repository.save(usuario);
 	}
 
+	public UserDetails autenticar(Usuario usuario) {
+		UserDetails user = loadUserByUsername(usuario.getLogin());
+		boolean passwordMatches = encoder.matches(usuario.getSenha(), user.getPassword());
+		
+		if(passwordMatches) {
+			return user;
+		}
+		throw new SenhaInvalidaException();
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario = repository.findByLogin(username)
